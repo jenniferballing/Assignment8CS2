@@ -19,4 +19,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="maze1.txt">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="maze2.txt">
+      <Filter>Source Files</Filter>
+    </None>
+  </ItemGroup>
 </Project>

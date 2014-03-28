@@ -1,13 +1,19 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <fstream>
 
 using namespace std;
 
 int CountCannonBalls( int levels);
 void PrintBinary (int num);
 int ComputeSumOfDigits (int num);
-
+void MazeSolver();
+void FindPath(int r, int c);
+void North(int r, int c);
+void South(int r, int c);
+void East(int r, int c);
+void West(int r, int c);
 
 int main ()
 {
@@ -27,6 +33,7 @@ int main ()
     cout<<"Should be 28: "<<ComputeSumOfDigits(5698)<<endl;
     cout<<"Should be 18: "<<ComputeSumOfDigits(963)<<endl;
 
+    MazeSolver();
 
 
     system("pause");
@@ -70,3 +77,35 @@ int ComputeSumOfDigits (int num)
     }
     return total;
 }
+void MazeSolver()
+{
+    //read in first line of file for bounds
+    int numRows=0, numCols=0, startRows=0, startCols=0;
+    string RAndC;
+    string startPos;
+    
+    fstream fin("maze1.txt");    
+    getline(fin, RAndC);
+
+    stringstream ss;
+    ss.str(RAndC);
+    ss>>numRows;
+    ss>>numCols;
+    
+    //read inn second line for starting pos
+    getline(fin, startPos);
+    stringstream st (startPos);
+    st>>startRows;
+    st>>startCols;
+
+    
+
+    //checker from online...that takes current location and had file info
+
+
+}
+void FindPath(int r, int c)
+{
+    if(
+}
+
