@@ -8,18 +8,15 @@ using namespace std;
 int CountCannonBalls( int levels);
 void PrintBinary (int num);
 int ComputeSumOfDigits (int num);
-void MazeSolver(int r, int c);
-bool findPath(int r, int c);
-void North(int r, int c);
-void South(int r, int c);
-void East(int r, int c);
-void West(int r, int c);
+void MazeSolver();
+bool FindPath(int r, int c);
+void Storage();
 
 int main ()
 {
     cout<<"Testing Problem 1: "<<endl;
     cout<<"Should be 55: "<<CountCannonBalls(5)<<endl;
-    cout<<"Should be 385: "<<CountCannonBalls(10)<<endl;
+    cout<<"Should be 385: "<<CountCannonBalls(10)<<endl<<endl;
 
     cout<<"Testing Problem 2: "<<endl;
     cout<<"Should be 11000: ";
@@ -27,14 +24,13 @@ int main ()
     cout<<endl;
     cout<<"Should be 11111000: ";
     PrintBinary(248);
-    cout<<endl;
+    cout<<endl<<endl;
 
     cout<<"Testing Problem 3: "<<endl;
     cout<<"Should be 28: "<<ComputeSumOfDigits(5698)<<endl;
-    cout<<"Should be 18: "<<ComputeSumOfDigits(963)<<endl;
+    cout<<"Should be 18: "<<ComputeSumOfDigits(963)<<endl<<endl;
 
-    //MazeSolver();
-
+    MazeSolver();
 
     system("pause");
     return 0;
@@ -77,13 +73,11 @@ int ComputeSumOfDigits (int num)
     }
     return total;
 }
-/*void MazeSolver(int r, int c)
+void MazeSolver()
 {
-    //read in first line of file for bounds
-    int numRows=0, numCols=0, startRows=0, startCols=0;
-    string RAndC;
-    string startPos;
-    
+    int numRows, numCols, startR, startC;
+    string RAndC, line, starting;
+    char strArr[20][20];
     fstream fin("maze1.txt");    
     getline(fin, RAndC);
 
@@ -91,26 +85,30 @@ int ComputeSumOfDigits (int num)
     ss.str(RAndC);
     ss>>numRows;
     ss>>numCols;
-    
-    //read inn second line for starting pos
-    getline(fin, startPos);
-    stringstream st (startPos);
-    st>>startRows;
-    st>>startCols;
 
-    //checker from online...that takes current location and had file info
-    char charAt;
-    if(r>numRows || r<0 || c<0 ||c>numCols) return false;
-    if(charAt=='t') return true;
+    getline(fin, starting);
 
+    stringstream st;
+    st.str(starting);
+    st>>startR;
+    st>>startC;
 
+    //Initialize array
+    for(int k=0; k<numRows; k++)
+    {
+        for(int l=0; l<numCols; l++)
+        {
+            strArr[k][l]='0';
+        }
+    }
 
-}*/
-bool findPath (int r, int c)
-{    
+    FindPath(startR, startC);
+}
+bool FindPath (int r, int c)
+{  
     int numRows, numCols;
-    string RAndC, line;
-    string strArr[20];
+    string RAndC, line, starting;
+    char strArr[20][20];
     fstream fin("maze1.txt");    
     getline(fin, RAndC);
 
@@ -119,56 +117,52 @@ bool findPath (int r, int c)
     ss>>numRows;
     ss>>numCols;
 
+    getline(fin, starting);
+    
     for(int i=0; i<numRows; i++)
     {
         getline(fin,line);
-        strArr[i]=line;
-    }
-    return 0;
-    
-
-    /*
-
-    char tempChar;
-
-    char* TwoD [50];
-    fstream file("maze1.txt");
-    for(int i=0; i<numRows; i++)
-    {
-        for(int j=0; j<numCols; j++)
+        for( int j=0; j<numCols; j++)
         {
-            file>>tempChar;
-            TwoD[i][j]=tempChar;
-        }
+            strArr[i][j]=line[j];
+        }  
     }
-    //getline (file, 
-    
     char charAt;
+    charAt=strArr[r][c];
+
     if(charAt==' ') return false;
     if(charAt=='t') return true;
     if(charAt=='X') return false;
-    charAt='S';//file io
-    if(findPath(North(r, c)==true) return true;
-    if(findPath(South(r,c)== true) return true;
-    if(findPath(East(r, c)==true) return true;
-    if(findPath(West(r, c)==true) return true;
-    charAt='.';//file io*/
-
-}
-void North(int r, int c)
-{
-    c-=1;
-}
-void South(int r, int c)
-{
-    c+=1;
-}
-void East(int r, int c)
-{
-    r+=1;
-}
-void West(int r, int c)
-{
-    r-=1;
+    fin<<'S';//charAt='S';
+    
+    if(c<numCols && c>=0)
+    {
+        if(FindPath(r, c-=1)==true) 
+        {
+            cout<< "Cooordinate: "<<r<<" "<<c<<endl;
+            return true;
+        }
+        if(FindPath(r, c+=1)== true) 
+        {
+            cout<< "Cooordinate: "<<r<<" "<<c<<endl;
+            return true;
+        }
+    }
+    
+    if(r>=0 && r<numRows)
+    {
+        if(FindPath(r+=1, c)==true)
+        {
+            cout<< "Cooordinate: "<<r<<" "<<c<<endl;
+            return true;
+        }
+        if(FindPath(r-=1, c)==true) 
+        {
+            cout<< "Cooordinate: "<<r<<" "<<c<<endl;
+            return true;
+        }
+        fin<<'P';//charAt='P';
+    } 
+    return 0;
 }
 
