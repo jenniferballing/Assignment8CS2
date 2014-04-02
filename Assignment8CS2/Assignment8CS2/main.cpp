@@ -9,7 +9,7 @@ int CountCannonBalls( int levels);
 void PrintBinary (int num);
 int ComputeSumOfDigits (int num);
 void MazeSolver();
-bool FindPath(int r, int c, char arr[][20]);
+bool FindPath(int r, int c, char arr[][5]);//char ** arr);
 void Storage();
 
 int main ()
@@ -75,9 +75,10 @@ int ComputeSumOfDigits (int num)
 }
 void MazeSolver()
 {
-    int numRows, numCols, startR, startC;
+    int numRows, numCols, startR, startC, j, treasureR, treasureC;
     string RAndC, line, starting;
-    char strArr[20][20];
+    char strArr[5][5];
+    //char * strArr = new char [100];
     fstream fin("maze1.txt");    
     getline(fin, RAndC);
 
@@ -105,15 +106,22 @@ void MazeSolver()
     for(int i=0; i<numRows; i++)
     {
         getline(fin,line);
-        for( int j=0; j<numCols; j++)
+        for(j=0; j<numCols; j++)
         {
             strArr[i][j]=line[j];
+            if(line[j]=='t')
+            {
+                treasureR=i;
+                treasureC=j;
+            }
         }  
     }
 
+    cout<< "Treasure: "<<treasureR<<", "<<treasureC<<endl;
     bool found = FindPath(startR, startC, strArr);
+    cout<<"FOUND!"<<endl;
 }
-bool FindPath (int r, int c, char Arr[][20])
+bool FindPath (int r, int c, char Arr[][5])
 {  
     int numRows, numCols;
     string RAndC, line, starting;
@@ -126,137 +134,38 @@ bool FindPath (int r, int c, char Arr[][20])
     ss>>numRows;
     ss>>numCols;
    
-    char charAt;
-    charAt=Arr[r][c];
-
-    if(charAt=='D') return false;
-    if(charAt=='t') return true;
-    if(charAt=='X') return false;
+    if(r<0 || r>numRows-1 || c<0 || c>numCols-1) return false;
     
-    if(c-1>=0)
+    char charAt;
+    charAt=Arr[r][c];    
+    
+    if(charAt=='t') return true;   
+    else if(charAt=='+') return false;
+    else if(charAt=='X') return false;
+        
+    Arr[r][c]='+';
+    
+    if(FindPath(r, c-1, Arr)==true) 
     {
-        cout<<"c-1"<<endl;
-        if(FindPath(r, c-=1, Arr)==true) 
-        {
-            cout<< "Cooordinate: "<<r<<" "<<c<<endl;
-            if(Arr[r][c]=='.') Arr[r][c+1]='D';
-            for(int i=0; i<numRows; i++)
-            {
-                for(int j=0; j<numCols; j++)
-                {
-                    cout<<Arr[i][j];
-                }
-                cout<<endl;
-            }
-            return true;
-        }
-        else 
-        {
-            c+=1;
-            if(Arr[r][c]=='.') Arr[r][c]='D';//Arr[r][c]='D';
-            
-            for(int i=0; i<numRows; i++)
-            {
-                for(int j=0; j<numCols; j++)
-                {
-                    cout<<Arr[i][j];
-                }cout<<endl;                
-            }            
-        }
+        cout<< "Treasure path: "<<r<<", "<<c<<endl;
+        return true;
     }
-    if(c+1<numCols-1)
+    if(FindPath(r, c+1, Arr)== true) 
     {
-        cout<<"c+1"<<endl;
-        if(FindPath(r, c+=1, Arr)== true) 
-        {
-            cout<< "Cooordinate: "<<r<<" "<<c<<endl;
-            if(Arr[r][c]=='.') Arr[r][c-1]='D';
-            for(int i=0; i<numRows; i++)
-            {
-                for(int j=0; j<numCols; j++)
-                {
-                    cout<<Arr[i][j];
-                }
-                cout<<endl;
-            }
-            return true;
-        }
-        else 
-        {
-            if(Arr[r][c]=='.') Arr[r][c]='D';//Arr[r][c]='D';
-            c-=1;
-            for(int i=0; i<numRows; i++)
-            {
-                for(int j=0; j<numCols; j++)
-                {
-                    cout<<Arr[i][j];
-                }
-                cout<<endl;
-            }
-        }
-    }   
-    if(r+1<numRows-1)
-    {
-        cout<<"r+1"<<endl;
-        if(FindPath(r+=1, c, Arr)==true)
-        {
-            cout<< "Cooordinate: "<<r<<" "<<c<<endl;
-            if(Arr[r][c]=='.') Arr[r-1][c]='D';
-            for(int i=0; i<numRows; i++)
-            {
-                for(int j=0; j<numCols; j++)
-                {
-                    cout<<Arr[i][j];
-                }
-                cout<<endl;
-            }
-            return true;
-        }
-       else 
-        {
-            if(Arr[r][c]=='.') Arr[r][c]='D';
-            r-=1;
-            for(int i=0; i<numRows; i++)
-            {
-                for(int j=0; j<numCols; j++)
-                {
-                    cout<<Arr[i][j];
-                }
-                cout<<endl;
-            }
-        }
+        cout<< "Treasure path: "<<r<<", "<<c<<endl;
+        return true;
     }
-    if(r-1>=0)
+    if(FindPath(r+1, c, Arr)==true)
     {
-        cout<<"r-1"<<endl;
-        if(FindPath(r-=1, c, Arr)==true) 
-        {
-            cout<< "Cooordinate: "<<r<<" "<<c<<endl;
-            if(Arr[r][c]=='.') Arr[r+1][c]='D';
-            for(int i=0; i<numRows; i++)
-            {
-                for(int j=0; j<numCols; j++)
-                {
-                    cout<<Arr[i][j];
-                }
-                cout<<endl;
-            }
-            return true;
-        }
-        else 
-        {
-            if(Arr[r][c]=='.') Arr[r][c]='D';//Arr[r][c]='D';
-            r+=1;
-            for(int i=0; i<numRows; i++)
-            {
-                for(int j=0; j<numCols; j++)
-                {
-                    cout<<Arr[i][j];
-                }
-                cout<<endl;
-            }            
-        }
+        cout<< "Treasure path: "<<r<<", "<<c<<endl;
+        return true;
     }
-    return 0;
+    if(FindPath(r-1, c, Arr)==true) 
+    {
+        cout<< "Treasure path: "<<r<<", "<<c<<endl;
+        return true;
+    }    
+    Arr[c][r]='X';
+    return false;
 }
 
