@@ -31,9 +31,8 @@ int main ()
     cout<<"Should be 28: "<<ComputeSumOfDigits(5698)<<endl;
     cout<<"Should be 18: "<<ComputeSumOfDigits(963)<<endl<<endl;
 
+    cout<<"Testing Problem 4:"<<endl;
     MazeSolver();
-
-    system("pause");
     return 0;
 }
 
@@ -80,7 +79,7 @@ void MazeSolver()
     string RAndC, line, starting;
     
     //MAZE INFO
-    fstream fin("maze2.txt");    
+    fstream fin("maze.txt");    
     getline(fin, RAndC);
 
     stringstream ss;
@@ -139,7 +138,7 @@ bool FindPath (int r, int c)
     string RAndC, line, starting;
 
     //MAZE INFO
-    fstream fin("maze2.txt");
+    fstream fin("maze.txt");
     
     getline(fin, RAndC);
     stringstream ss;
