@@ -9,8 +9,9 @@ int CountCannonBalls( int levels);
 void PrintBinary (int num);
 int ComputeSumOfDigits (int num);
 void MazeSolver();
-bool FindPath(int r, int c, char arr[][5]);//char ** arr);
+bool FindPath(int r, int c);
 void Storage();
+char** Arr;
 
 int main ()
 {
@@ -77,15 +78,21 @@ void MazeSolver()
 {
     int numRows, numCols, startR, startC, j, treasureR, treasureC;
     string RAndC, line, starting;
-    char strArr[5][5];
-    //char * strArr = new char [100];
-    fstream fin("maze1.txt");    
+    
+    //MAZE INFO
+    fstream fin("maze2.txt");    
     getline(fin, RAndC);
 
     stringstream ss;
     ss.str(RAndC);
     ss>>numRows;
     ss>>numCols;
+
+    Arr= new char *[numRows];
+    for(int y=0; y<numCols; y++)
+    {
+        Arr[y]= new char [numCols];
+    }
 
     getline(fin, starting);
 
@@ -99,7 +106,7 @@ void MazeSolver()
     {
         for(int l=0; l<numCols; l++)
         {
-            strArr[k][l]='0';
+            Arr[k][l]='0';
         }
     }
 
@@ -108,7 +115,7 @@ void MazeSolver()
         getline(fin,line);
         for(j=0; j<numCols; j++)
         {
-            strArr[i][j]=line[j];
+            Arr[i][j]=line[j];
             if(line[j]=='t')
             {
                 treasureR=i;
@@ -118,17 +125,23 @@ void MazeSolver()
     }
 
     cout<< "Treasure: "<<treasureR<<", "<<treasureC<<endl;
-    bool found = FindPath(startR, startC, strArr);
+    bool found = FindPath(startR, startC);
     cout<<"FOUND!"<<endl;
+    for(int z=0; z<numRows; z++)
+    {
+        delete Arr[z];
+    }
+    delete [] Arr;
 }
-bool FindPath (int r, int c, char Arr[][5])
+bool FindPath (int r, int c)
 {  
     int numRows, numCols;
     string RAndC, line, starting;
-    fstream fin("maze1.txt");
+
+    //MAZE INFO
+    fstream fin("maze2.txt");
     
     getline(fin, RAndC);
-
     stringstream ss;
     ss.str(RAndC);
     ss>>numRows;
@@ -145,22 +158,22 @@ bool FindPath (int r, int c, char Arr[][5])
         
     Arr[r][c]='+';
     
-    if(FindPath(r, c-1, Arr)==true) 
+    if(FindPath(r, c-1)==true) 
     {
         cout<< "Treasure path: "<<r<<", "<<c<<endl;
         return true;
     }
-    if(FindPath(r, c+1, Arr)== true) 
+    if(FindPath(r, c+1)== true) 
     {
         cout<< "Treasure path: "<<r<<", "<<c<<endl;
         return true;
     }
-    if(FindPath(r+1, c, Arr)==true)
+    if(FindPath(r+1, c)==true)
     {
         cout<< "Treasure path: "<<r<<", "<<c<<endl;
         return true;
     }
-    if(FindPath(r-1, c, Arr)==true) 
+    if(FindPath(r-1, c)==true) 
     {
         cout<< "Treasure path: "<<r<<", "<<c<<endl;
         return true;
